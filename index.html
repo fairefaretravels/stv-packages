@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STV Consulting System – Strategy. Structure. Execution.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:    #080808;
+      --dark:     #111111;
+      --card:     #181818;
+      --border:   #2a2a2a;
+      --gold:     #C9A84C;
+      --gold-lt:  #E8C97A;
+      --gold-dk:  #8A6C28;
+      --white:    #F5F0E8;
+      --muted:    #7A7A7A;
+      --text:     #D8D0C4;
+      --ff-head:  'Bebas Neue', sans-serif;
+      --ff-body:  'Inter', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: var(--ff-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--ff-head);
+      font-size: 1.5rem;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+    }
+    .nav-logo span { color: var(--white); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold); color: var(--black);
+      border: none; padding: 0.55rem 1.4rem;
+      font-family: var(--ff-body); font-size: 0.78rem;
+      font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .nav-cta:hover { background: var(--gold-lt); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      gap: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: 'STV';
+      position: absolute; right: -2rem; top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--ff-head);
+      font-size: 28vw;
+      color: rgba(201,168,76,0.04);
+      pointer-events: none;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .hero h1 {
+      font-family: var(--ff-head);
+      font-size: clamp(3.5rem, 6vw, 6rem);
+      line-height: 0.95;
+      letter-spacing: 0.04em;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--gold);
+      display: block;
+    }
+    .hero-sub {
+      font-size: 1rem; color: var(--muted);
+      max-width: 480px; margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--gold); color: var(--black);
+      padding: 0.9rem 2rem; font-weight: 700;
+      font-size: 0.85rem; letter-spacing: 0.08em;
+      text-transform: uppercase; text-decoration: none;
+      border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--gold-lt); transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent; color: var(--white);
+      border: 1px solid var(--border);
+      padding: 0.9rem 2rem; font-weight: 500;
+      font-size: 0.85rem; letter-spacing: 0.08em;
+      text-transform: uppercase; text-decoration: none;
+      cursor: pointer; transition: border-color 0.2s, color 0.2s;
+      display: inline-block;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* Hero right — video placeholder */
+    .hero-media {
+      position: relative;
+      aspect-ratio: 16/9;
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem;
+      overflow: hidden;
+    }
+    .hero-media::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%);
+    }
+    .play-ring {
+      width: 72px; height: 72px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 1;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .play-ring:hover { transform: scale(1.08); border-color: var(--gold-lt); }
+    .play-ring svg { margin-left: 4px; }
+    .hero-media p {
+      font-size: 0.75rem; color: var(--muted);
+      letter-spacing: 0.12em; text-transform: uppercase;
+      position: relative; z-index: 1;
+    }
+    /* When video is added, replace .hero-media placeholder with actual video */
+    .hero-media video, .hero-media iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; border: none; object-fit: cover;
+    }
+
+    /* Deck preview thumbnails */
+    .deck-preview {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .deck-slide {
+      aspect-ratio: 16/9;
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--ff-head);
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      text-align: center;
+      padding: 0.4rem;
+      transition: border-color 0.2s;
+      font-size: 0.55rem;
+    }
+    .deck-slide:hover { border-color: var(--gold); }
+    .deck-slide span { color: var(--muted); display: block; font-family: var(--ff-body); font-size: 0.5rem; margin-top: 2px; }
+
+    /* ── TICKER ── */
+    .ticker {
+      background: var(--gold);
+      padding: 0.6rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 22s linear infinite;
+    }
+    .ticker-inner span {
+      font-family: var(--ff-head);
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      color: var(--black);
+      margin: 0 2rem;
+    }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 4rem; }
+    .section-label {
+      font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--ff-head);
+      font-size: clamp(2.4rem, 4vw, 3.8rem);
+      letter-spacing: 0.04em;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── WHAT'S INSIDE ── */
+    .inside { background: var(--dark); }
+    .inside-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .inside-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      transition: border-color 0.25s, transform 0.2s;
+    }
+    .inside-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+    .inside-num {
+      font-family: var(--ff-head);
+      font-size: 2.8rem;
+      color: rgba(201,168,76,0.18);
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+    .inside-card h3 {
+      font-family: var(--ff-head);
+      font-size: 1.1rem; letter-spacing: 0.08em;
+      color: var(--white); margin-bottom: 0.6rem;
+    }
+    .inside-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── SEN METHOD ── */
+    .sen { background: var(--black); }
+    .sen-stack {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      margin-top: 3rem;
+    }
+    .sen-items { display: flex; flex-direction: column; gap: 2.5rem; }
+    .sen-item { display: flex; gap: 1.5rem; align-items: flex-start; }
+    .sen-letter {
+      flex-shrink: 0;
+      width: 52px; height: 52px;
+      background: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--ff-head);
+      font-size: 1.8rem;
+      color: var(--black);
+    }
+    .sen-item h3 {
+      font-family: var(--ff-head);
+      font-size: 1.2rem; letter-spacing: 0.1em;
+      color: var(--gold); margin-bottom: 0.4rem;
+    }
+    .sen-item p { font-size: 0.88rem; color: var(--muted); line-height: 1.65; }
+    .sen-visual {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    .sen-visual .big-text {
+      font-family: var(--ff-head);
+      font-size: 5rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .sen-visual .sub-text {
+      font-size: 0.7rem; letter-spacing: 0.18em;
+      color: var(--muted); text-transform: uppercase;
+      margin-top: 1rem;
+    }
+
+    /* ── PRICING ── */
+    .pricing { background: var(--dark); }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .pricing-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      position: relative;
+      transition: border-color 0.25s;
+    }
+    .pricing-card.featured {
+      border-color: var(--gold);
+      background: #161208;
+    }
+    .pricing-badge {
+      position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
+      background: var(--gold); color: var(--black);
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 0.28rem 1rem;
+    }
+    .pricing-tier {
+      font-size: 0.68rem; letter-spacing: 0.2em;
+      color: var(--gold); text-transform: uppercase;
+      font-weight: 600; margin-bottom: 0.75rem;
+    }
+    .pricing-price {
+      font-family: var(--ff-head);
+      font-size: 3rem; letter-spacing: 0.02em;
+      color: var(--white); line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .pricing-sub {
+      font-size: 0.78rem; color: var(--muted);
+      font-style: italic; margin-bottom: 1.5rem;
+    }
+    .pricing-divider {
+      border: none; border-top: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 2rem; }
+    .pricing-features li {
+      font-size: 0.84rem; color: var(--text);
+      display: flex; gap: 0.6rem; align-items: flex-start;
+    }
+    .pricing-features li::before {
+      content: '✦'; color: var(--gold);
+      font-size: 0.55rem; flex-shrink: 0; margin-top: 0.3rem;
+    }
+    .pricing-btn {
+      display: block; width: 100%;
+      text-align: center; text-decoration: none;
+      padding: 0.85rem; font-weight: 700;
+      font-size: 0.78rem; letter-spacing: 0.1em;
+      text-transform: uppercase; cursor: pointer;
+      border: none; transition: all 0.2s;
+    }
+    .pricing-btn-primary { background: var(--gold); color: var(--black); }
+    .pricing-btn-primary:hover { background: var(--gold-lt); }
+    .pricing-btn-outline { background: transparent; color: var(--white); border: 1px solid var(--border); }
+    .pricing-btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── PROCESS ── */
+    .process { background: var(--black); }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin-top: 3rem;
+      position: relative;
+    }
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 2.2rem; left: 16.5%; right: 16.5%;
+      height: 1px; background: var(--gold-dk);
+    }
+    .process-step { text-align: center; padding: 0 2rem; }
+    .process-dot {
+      width: 44px; height: 44px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--ff-head); font-size: 1.2rem;
+      color: var(--black); margin: 0 auto 1.5rem;
+      position: relative; z-index: 1;
+    }
+    .process-step h3 {
+      font-family: var(--ff-head);
+      font-size: 1.3rem; letter-spacing: 0.1em;
+      color: var(--white); margin-bottom: 0.6rem;
+    }
+    .process-step p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── WAITLIST / DOWNLOAD ── */
+    .waitlist {
+      background: var(--dark);
+      text-align: center;
+    }
+    .waitlist .section-title { margin-bottom: 0.75rem; }
+    .waitlist p { color: var(--muted); max-width: 500px; margin: 0 auto 2.5rem; font-size: 0.92rem; }
+    .waitlist-form {
+      display: flex; gap: 0; max-width: 480px;
+      margin: 0 auto 1.5rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .waitlist-form:focus-within { border-color: var(--gold); }
+    .waitlist-form input {
+      flex: 1; background: transparent; border: none; outline: none;
+      padding: 0.9rem 1.2rem; color: var(--white);
+      font-family: var(--ff-body); font-size: 0.88rem;
+    }
+    .waitlist-form input::placeholder { color: var(--muted); }
+    .waitlist-form button {
+      background: var(--gold); border: none;
+      padding: 0.9rem 1.6rem; cursor: pointer;
+      font-weight: 700; font-size: 0.78rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--black); transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .waitlist-form button:hover { background: var(--gold-lt); }
+    .waitlist-note { font-size: 0.72rem; color: var(--muted); }
+
+    /* ── DOWNLOAD CTA ── */
+    .download-cta {
+      background: var(--black);
+      text-align: center;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .cta-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 2.5rem; }
+    .cta-file-note { font-size: 0.72rem; color: var(--muted); margin-top: 1rem; }
+
+    /* ── BOOK CALL ── */
+    .book { background: var(--dark); }
+    .book-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .book h2 {
+      font-family: var(--ff-head);
+      font-size: clamp(2.4rem, 4vw, 3.5rem);
+      letter-spacing: 0.04em;
+      color: var(--white);
+      line-height: 1; margin-bottom: 1.2rem;
+    }
+    .book h2 em { font-style: normal; color: var(--gold); }
+    .book p { color: var(--muted); font-size: 0.92rem; line-height: 1.7; margin-bottom: 2rem; }
+    .book-details { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 2rem; }
+    .book-detail { display: flex; gap: 0.8rem; align-items: flex-start; font-size: 0.85rem; color: var(--text); }
+    .book-detail::before { content: '→'; color: var(--gold); flex-shrink: 0; }
+    .book-visual {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 3rem 2.5rem;
+    }
+    .book-visual .big-stat {
+      font-family: var(--ff-head);
+      font-size: 4rem; color: var(--gold);
+      letter-spacing: 0.02em; line-height: 1;
+    }
+    .book-visual .stat-label {
+      font-size: 0.75rem; letter-spacing: 0.14em;
+      color: var(--muted); text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .book-visual hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      padding: 3rem 4rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-logo {
+      font-family: var(--ff-head);
+      font-size: 1.6rem; letter-spacing: 0.15em;
+      color: var(--gold);
+    }
+    .footer-logo span { color: var(--white); }
+    .footer-links { display: flex; gap: 2rem; list-style: none; }
+    .footer-links a {
+      font-size: 0.75rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+    .footer-copy { font-size: 0.72rem; color: var(--muted); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; gap: 2.5rem; }
+      .hero::before { font-size: 40vw; right: -1rem; }
+      section { padding: 4rem 1.5rem; }
+      .sen-stack { grid-template-columns: 1fr; gap: 3rem; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; gap: 2.5rem; }
+      .process-steps::before { display: none; }
+      .book-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      footer { flex-direction: column; align-items: flex-start; padding: 2.5rem 1.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ticker-inner { animation: none; }
+      * { transition: none !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><span>STV</span> NETWORK</div>
+  <ul class="nav-links">
+    <li><a href="#inside">What's Inside</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#book">Book a Call</a></li>
+  </ul>
+  <a href="#pricing" class="nav-cta">Get Started</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-eyebrow">STV Consulting System</span>
+    <h1>BUILD YOUR <em>SYSTEM.</em></h1>
+    <p class="hero-sub">
+      The complete pitch deck and strategic framework for founders, creators, and media brands ready to scale — through strategy, structure, and execution.
+    </p>
+    <div class="hero-actions">
+      <a href="STV_Network_Pitch_Deck.pptx" download class="btn-primary">Download Deck</a>
+      <a href="#pricing" class="btn-outline">View Packages</a>
+    </div>
+
+    <div class="deck-preview">
+      <div class="deck-slide">STV NETWORK<span>Title Slide</span></div>
+      <div class="deck-slide">THE CLARITY GAP<span>Problem</span></div>
+      <div class="deck-slide">S.E.N METHOD<span>Framework</span></div>
+      <div class="deck-slide">IDEAL PARTNERS<span>Audience</span></div>
+      <div class="deck-slide">PACKAGES<span>Pricing</span></div>
+      <div class="deck-slide">BOOK A CALL<span>CTA</span></div>
+    </div>
+  </div>
+
+  <!-- VIDEO PLACEHOLDER — replace contents with your <video> or <iframe> when ready -->
+  <div class="hero-media" id="hero-video">
+    <div class="play-ring">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <polygon points="6,3 17,10 6,17" fill="#C9A84C"/>
+      </svg>
+    </div>
+    <video controls poster="stv-logo.jpeg">
+        <source src="mov-3.mp4" type="video/mp4" />
+      </video>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner">
+    <span>STRATEGY</span><span>·</span>
+    <span>STRUCTURE</span><span>·</span>
+    <span>EXECUTION</span><span>·</span>
+    <span>STV NETWORK</span><span>·</span>
+    <span>LITHONIA, GA</span><span>·</span>
+    <span>CULTURE. STREET. SOUND.</span><span>·</span>
+    <span>STRATEGY</span><span>·</span>
+    <span>STRUCTURE</span><span>·</span>
+    <span>EXECUTION</span><span>·</span>
+    <span>STV NETWORK</span><span>·</span>
+    <span>LITHONIA, GA</span><span>·</span>
+    <span>CULTURE. STREET. SOUND.</span><span>·</span>
+  </div>
+</div>
+
+<!-- WHAT'S INSIDE -->
+<section class="inside" id="inside">
+  <div class="section-label">The Deck</div>
+  <h2 class="section-title">11 SLIDES.<br>ZERO FILLER.</h2>
+  <div class="inside-grid">
+    <div class="inside-card">
+      <div class="inside-num">01</div>
+      <h3>THE CLARITY GAP</h3>
+      <p>Diagnose exactly why most businesses stall — and position the STV system as the solution.</p>
+    </div>
+    <div class="inside-card">
+      <div class="inside-num">02</div>
+      <h3>S.E.N STACK METHOD</h3>
+      <p>The proprietary Strategy → Execution → Network framework that drives every engagement.</p>
+    </div>
+    <div class="inside-card">
+      <div class="inside-num">03</div>
+      <h3>WHAT WE BUILD</h3>
+      <p>Systems, funnels, and execution plans — the three pillars that transform operations.</p>
+    </div>
+    <div class="inside-card">
+      <div class="inside-num">04</div>
+      <h3>IDEAL PARTNERS</h3>
+      <p>Founders, creators, nonprofits, and service providers — with language that speaks to each.</p>
+    </div>
+    <div class="inside-card">
+      <div class="inside-num">05</div>
+      <h3>STRATEGIC PACKAGES</h3>
+      <p>All three tiers — Starter ($997), Growth ($3,500), and Enterprise ($5K–$10K+) — laid out clearly.</p>
+    </div>
+    <div class="inside-card">
+      <div class="inside-num">06</div>
+      <h3>THE NETWORK</h3>
+      <p>RadioMeltdown.com and the STV media ecosystem — culture, community, and commerce converging.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SEN METHOD -->
+<section class="sen">
+  <div class="section-label">The Framework</div>
+  <h2 class="section-title">THE S.E.N<br>STACK METHOD</h2>
+  <div class="sen-stack">
+    <div class="sen-items">
+      <div class="sen-item">
+        <div class="sen-letter">S</div>
+        <div>
+          <h3>STRATEGY</h3>
+          <p>Define your positioning, audience, and revenue model with clarity and intention — before you build anything.</p>
+        </div>
+      </div>
+      <div class="sen-item">
+        <div class="sen-letter">E</div>
+        <div>
+          <h3>EXECUTION</h3>
+          <p>Build the systems, workflows, and content infrastructure to deliver consistently at scale.</p>
+        </div>
+      </div>
+      <div class="sen-item">
+        <div class="sen-letter">N</div>
+        <div>
+          <h3>NETWORK</h3>
+          <p>Grow the right relationships, partnerships, and platforms to amplify your reach and authority.</p>
+        </div>
+      </div>
+    </div>
+    <div class="sen-visual">
+      <div class="big-text">S.E.N</div>
+      <p class="sub-text">The operating system for independent brands</p>
+      <hr style="border-color: #2a2a2a; margin: 2rem 0;" />
+      <p style="font-size: 0.85rem; color: var(--muted); line-height: 1.7;">
+        Most consultants give you a plan. STV builds you the infrastructure — the systems that run whether or not you're in the room.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="section-label">Packages</div>
+  <h2 class="section-title">STRATEGIC<br>ENGAGEMENTS</h2>
+  <div class="pricing-grid">
+
+    <div class="pricing-card">
+      <div class="pricing-tier">Starter</div>
+      <div class="pricing-price">$997</div>
+      <div class="pricing-sub">Clarity Sprint</div>
+      <hr class="pricing-divider" />
+      <ul class="pricing-features">
+        <li>60-Minute Strategy Session</li>
+        <li>Business Model Review</li>
+        <li>Brand Positioning Review</li>
+        <li>Revenue Plan Review</li>
+        <li>Website Audit or Blueprint</li>
+        <li>Social Media Direction Plan</li>
+        <li>30-Day Action Roadmap</li>
+        <li>Follow-Up Call</li>
+      </ul>
+      <a href="mailto:support@g4emovement.net?subject=Starter Package Inquiry" class="pricing-btn pricing-btn-outline">Apply Now</a>
+    </div>
+
+    <div class="pricing-card featured">
+      <div class="pricing-badge">Most Popular</div>
+      <div class="pricing-tier">Growth</div>
+      <div class="pricing-price">$3,500</div>
+      <div class="pricing-sub">System Build</div>
+      <hr class="pricing-divider" />
+      <ul class="pricing-features">
+        <li>Everything in Starter</li>
+        <li>Full Operations Audit</li>
+        <li>SOP Development</li>
+        <li>Content & Funnel Strategy</li>
+        <li>60-Day Execution Plan</li>
+        <li>Bi-Weekly Check-ins</li>
+      </ul>
+      <a href="mailto:support@g4emovement.net?subject=Growth Package Inquiry" class="pricing-btn pricing-btn-primary">Apply Now</a>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-tier">Enterprise</div>
+      <div class="pricing-price" style="font-size: 2rem;">$5K–$10K+</div>
+      <div class="pricing-sub">Full Execution Partnership</div>
+      <hr class="pricing-divider" />
+      <ul class="pricing-features">
+        <li>Everything in Growth</li>
+        <li>Done-With-You Systems Build</li>
+        <li>Brand & Media Integration</li>
+        <li>Partner & Network Strategy</li>
+        <li>Ongoing Advisory Support</li>
+      </ul>
+      <a href="mailto:support@g4emovement.net?subject=Enterprise Package Inquiry" class="pricing-btn pricing-btn-outline">Book a Call</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="section-label">How It Works</div>
+  <h2 class="section-title">THREE STEPS.<br>ONE SYSTEM.</h2>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="process-dot">1</div>
+      <h3>APPLY</h3>
+      <p>Submit your application and connect with the STV team to discuss your goals and where you're stuck.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-dot">2</div>
+      <h3>AUDIT</h3>
+      <p>We analyze your business, brand, and systems — identifying every gap between where you are and where you're going.</p>
+    </div>
+    <div class="process-step">
+      <div class="process-dot">3</div>
+      <h3>EXECUTE</h3>
+      <p>We build and deploy your customized growth system, with clear deliverables and accountability at every step.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD CTA -->
+<section class="download-cta" id="download">
+  <div class="section-label">Free Resource</div>
+  <h2 class="section-title">GRAB THE<br>PITCH DECK</h2>
+  <p style="color: var(--muted); max-width: 480px; margin: 0 auto; font-size: 0.92rem;">
+    The full STV Consulting System pitch deck — 11 slides, black & gold, ready to present or personalize.
+  </p>
+  <div class="cta-actions">
+    <a href="STV_Network_Pitch_Deck.pptx" download class="btn-primary">Download .pptx</a>
+    <a href="mailto:support@g4emovement.net?subject=Strategy Call Request" class="btn-outline">Book a Strategy Call</a>
+  </div>
+  <p class="cta-file-note">PowerPoint format · 11 slides · Free download</p>
+</section>
+
+<!-- BOOK A CALL -->
+<section class="book" id="book">
+  <div class="book-inner">
+    <div>
+      <div class="section-label">Ready to Build</div>
+      <h2>YOUR SYSTEM <em>STARTS HERE.</em></h2>
+      <p>A strategy call is where we figure out what's holding your business back and map out exactly what to build first. No pitch, no pressure — just clarity.</p>
+      <div class="book-details">
+        <div class="book-detail">60-minute working session over video call</div>
+        <div class="book-detail">Business model and brand audit included</div>
+        <div class="book-detail">Walk away with a 30-day action plan</div>
+        <div class="book-detail">Applied toward any paid package</div>
+      </div>
+      <a href="mailto:support@g4emovement.net?subject=Strategy Call Request" class="btn-primary">Book Your Strategy Call</a>
+    </div>
+    <div class="book-visual">
+      <div class="big-stat">$997</div>
+      <div class="stat-label">Starter package · Clarity Sprint</div>
+      <hr />
+      <div class="big-stat" style="font-size: 2.6rem;">$3,500</div>
+      <div class="stat-label">Growth package · System Build</div>
+      <hr />
+      <div class="big-stat" style="font-size: 2rem;">$5K–$10K+</div>
+      <div class="stat-label">Enterprise · Full Execution Partnership</div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section class="waitlist" id="waitlist">
+  <div class="section-label">Stay Connected</div>
+  <h2 class="section-title">JOIN THE<br>WAITLIST</h2>
+  <p>Be first to know about new resources, workshops, and consulting openings from STV Network.</p>
+  <form class="waitlist-form" onsubmit="handleWaitlist(event)">
+    <input type="email" placeholder="your@email.com" required />
+    <button type="submit">Join</button>
+  </form>
+  <p class="waitlist-note">No spam. Unsubscribe anytime. Lithonia, GA · stvconsultingsystem.com</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><span>STV</span> NETWORK</div>
+  <ul class="footer-links">
+    <li><a href="#inside">The Deck</a></li>
+    <li><a href="#pricing">Packages</a></li>
+    <li><a href="#book">Book a Call</a></li>
+    <li><a href="https://radiomeltdown.com" target="_blank">RadioMeltdown.com</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 STV Network · support@g4emovement.net</p>
+</footer>
+
+<script>
+  // Waitlist form handler
+  function handleWaitlist(e) {
+    e.preventDefault();
+    const input = e.target.querySelector('input');
+    const btn   = e.target.querySelector('button');
+    btn.textContent = '✦ You\'re in';
+    btn.style.background = '#2a2a2a';
+    btn.style.color = '#C9A84C';
+    input.disabled = true;
+    btn.disabled   = true;
+  }
+
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.inside-card, .pricing-card, .process-step, .sen-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
